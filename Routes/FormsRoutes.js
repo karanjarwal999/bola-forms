@@ -15,8 +15,8 @@ router.post('/',async (req,res)=>{
     const data= req.body
     if(!data){ res.status(404).send({message:"please pass body"}) }
     try {
-        const form= await new Form(data)
-        form.save()
+        const form= await Form.create(data)
+        // form.save()
         res.send({message:'form created successfully',data:form})
     } catch (error) {
         res.send(error.message)
