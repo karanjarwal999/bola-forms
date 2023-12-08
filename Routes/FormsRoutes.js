@@ -2,15 +2,26 @@ const express = require('express')
 const router= express.Router()
 const Form= require('../Models/FormsModel')
 
+// to get all data
 router.get('/',async (req,res)=>{
-    // route thaat return last form
     try {
         const forms= await Form.find()
-        res.send(forms[forms.length-1])
+        res.send(forms)
     } catch (error) {
         res.send(error.message)
     }
 })
+//to get single form
+router.get('/get/:id',async (req,res)=>{
+    const params = req.params
+    try {
+        const forms= await Form.find({_id: params.id})
+        res.send(forms)
+    } catch (error) {
+        res.send(error.message)
+    }
+})
+//post new form
 router.post('/',async (req,res)=>{
     const data= req.body
     if(!data){ res.status(404).send({message:"please pass body"}) }
@@ -23,6 +34,7 @@ router.post('/',async (req,res)=>{
     }
 })
 
+//delete form
 router.delete('/:id',async (req,res)=>{
     const id= req.params.id
     
@@ -30,14 +42,14 @@ router.delete('/:id',async (req,res)=>{
         if(!id){
             res.status(404).send({message:'id not specified'})    
         }
-
         const form= await Form.findByIdAndDelete(id)
-        res.send({message:'form created successfully',data:form})
+        res.send({message:'form deleted successfully',data:form})
     } catch (error) {
         res.send(error.message)
     }
 })
 
+//edit form
 router.patch('/:id',async (req,res)=>{
     const id= req.params.id
     const data= req.body
@@ -46,8 +58,8 @@ router.patch('/:id',async (req,res)=>{
             res.status(404).send({message:'id not specified'})    
         }
 
-        const form= await Form.findByIdAndUpdate(id,{"questions":{...data}})
-        res.send({message:'form created successfully',data:form})
+        const form= await Form.findByIdAndUpdate(id,{data})
+        res.send({message:'form updated successfully',data:form})
     } catch (error) {
         res.send(error.message)
     }

@@ -18,7 +18,7 @@ app.use('/',(req,res)=>{
 })
 
 app.listen('8080',async ()=>{
-    console.log('server running');
+    console.log('server started');
     try {
         mongoose.connect(process.env.MONGODB_URL)
         console.log('database connection established')
