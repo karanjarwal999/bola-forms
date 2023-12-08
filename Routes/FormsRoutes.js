@@ -58,7 +58,7 @@ router.patch('/:id',async (req,res)=>{
             res.status(404).send({message:'id not specified'})    
         }
 
-        const form= await Form.findByIdAndUpdate(id,{data})
+        const form = await Form.findByIdAndUpdate(id, { $set: data }, { new: true });
         res.send({message:'form updated successfully',data:form})
     } catch (error) {
         res.send(error.message)
